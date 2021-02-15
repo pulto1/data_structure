@@ -5,28 +5,34 @@
 
 // 顺序表，有效数组在数组中必须是连续
 // 静态顺序表设计 （固定大小）
-//typedef int SLDataType;
-//#define N 10
+
 //
 //// vector
-//struct SeqList
-//{
-//	SLDataType a[N];
-//	int size;
-//};
+
+//顺序表的静态存储
+typedef int SLDataType;
+#define N 10
+struct SeqList
+{
+	SLDataType a[N];//定长数组
+	int size;      // 有效数据的个数
+};
+
 //
 //void SeqListPushBack(struct SeqList* ps, SLDataType x);
 //void SeqListPopBack(struct SeqList* ps);
 //void SeqListPushFront(struct SeqList* ps, SLDataType x);
 //void SeqListPopFront(struct SeqList* ps);
 
+// vector
+
 // 动态顺序表设计 （大小可变）
 typedef int SLDataType;
 
-// vector
+
 typedef struct SeqList
 {
-	SLDataType* a;
+	SLDataType* a;  //指向动态开辟的数组
 	int size;      // 有效数据的个数
 	int capacity;  // 容量
 }SL;
