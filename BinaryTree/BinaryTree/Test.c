@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "Queue.h"
+
 typedef char BTDataType;
 typedef struct BinaryTreeNode
 {
@@ -103,6 +105,94 @@ int TreeLeafSize(BTNode* root)
 	return TreeLeafSize(root->_left) + TreeLeafSize(root->_right);
 }
 
+//二叉树第K层结点个数
+int BinaryTreeLevelKsize(BTNode* root, int k)
+{
+	if (root == NULL)
+		return 0;
+
+	if (k == 1)
+		return 1;
+
+	return BinaryTreeLevelKsize(root->_left, k - 1) + BinaryTreeLevelKsize(root->_right, k - 1);
+}
+
+void BinaryTreeLevelOrder(BTNode* root)
+{
+	Queue q;
+	QueueInit(&q);
+
+	if (root == NULL)
+		return;
+
+	QueuePush(&q, root);
+
+	while (!QueueEmpty(&q))
+	{
+		BTNode* front = QueueFront(&q);
+		QueuePop(&q);
+
+		printf("%c ", front->_data);
+
+		if (front->_left)
+		{
+			QueuePush(&q, front->_left);
+		}
+
+		if (front->_right)
+		{
+			QueuePush(&q, front->_right);
+		}
+	}
+
+	QueueDestroy(&q);
+	printf("\n");
+}
+
+//判断一棵树是不是完全二叉树
+//是返回1，不是返回0
+int BinaryTreeComplete(BTNode* root)
+{
+	Queue q;
+	QueueInit(&q);
+
+	if (root == NULL)
+		return 1;
+
+	QueuePush(&q, root);
+
+	while (!QueueEmpty(&q))
+	{
+		BTNode* front = QueueFront(&q);
+		QueuePop(&q);
+
+		if (front == NULL)
+		{
+			break;
+		}
+
+		QueuePush(&q, front->_left);
+		QueuePush(&q, front->_right);
+	}
+
+	while (!QueueEmpty(&q))
+	{
+		BTNode* front = QueueFront(&q);
+		QueuePop(&q);
+
+		if (front)
+		{
+			QueueDestroy(&q);
+			return 0;
+		}
+	}
+
+	QueueDestroy(&q);
+	return 1;
+}
+
+
+
 int main()
 {
 
@@ -119,7 +209,12 @@ int main()
 	//printf("BinaryTreeSize: %d\n", TreeSize(A));
 	//printf("BinaryTreeSize: %d\n", TreeSize(A));
 
-	printf("BinaryLeafTreeSize: %d\n", TreeLeafSize(A));
+	//printf("BinaryLeafTreeSize: %d\n", TreeLeafSize(A));
+
+	//printf("BinaryLeafTreeSize: %d\n", BinaryTreeLevelKsize(A, 3));
+	//BinaryTreeLevelOrder(A);
+
+	printf("BinaryTreeComplete: %d\n", BinaryTreeComplete(A));
 	/*PostOrder(A);
 	printf("\n");*/
 
